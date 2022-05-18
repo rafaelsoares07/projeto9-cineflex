@@ -1,7 +1,7 @@
 import axios from "axios"
 import React from "react"
 import { Link } from "react-router-dom";
-
+import Header from "./Header";
 
 
 
@@ -39,7 +39,7 @@ export default function TelaInicial(){
 
     return(
         <>
-        <h1>Selecione um filme:</h1>
+        <Header/>
         <div className="l-container-cards">
             {itensApi.map(item=> <Link to={`/sessao/${item.id}`}><FilmPoster id={item.id} title={item.title} posterURL={item.posterURL}></FilmPoster></Link>  )}
         </div>

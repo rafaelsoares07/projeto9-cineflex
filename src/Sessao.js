@@ -1,6 +1,7 @@
 import axios from "axios"
 import React from "react"
-import { Link, useParams } from "react-router-dom"
+import {useParams } from "react-router-dom"
+import Header from "./Header"
 
 
 
@@ -9,7 +10,10 @@ export default function Sessao(){
 
     const [itemApi, setItemApi] = React.useState({})
     const {idSessao}= useParams()
+    console.log(idSessao)
     console.log(itemApi)
+  
+    
 
     React.useEffect(()=>{
         const promisse = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idSessao}/showtimes`)
@@ -23,10 +27,21 @@ export default function Sessao(){
 
     return(
         <>
-        <h1>{itemApi.id}</h1>
-        <h1>{itemApi.title}</h1>
-        <h3>{itemApi.overview}</h3>
-        <img src={itemApi.posterURL}/>
+        
+        <Header/>
+
+        {itemApi.id}
+        {itemApi.days.map(item=> <h1>{item.weekday}</h1>)}
+
+
+        <div className="footer">
+            <div>
+                <img src={itemApi.posterURL}/>
+                <p>{itemApi.title}</p>
+            </div>
+        
+        </div>
+       
         
         </>
     )
