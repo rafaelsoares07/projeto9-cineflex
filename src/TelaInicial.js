@@ -6,7 +6,7 @@ import Header from "./Header";
 
 
 function FilmPoster({id, posterURL, title}){
-    console.log(id+'  '+title)
+    //console.log(id+'  '+title)
     return (
         <div className="cardsFilme">
            <div className="cartaz">
@@ -32,10 +32,6 @@ export default function TelaInicial(){
         })
     },[])
   
-
-
-
-
 
     return(
         <>

@@ -1,17 +1,50 @@
 import axios from "axios"
 import React from "react"
-import {useParams } from "react-router-dom"
+import {useParams, Link } from "react-router-dom"
 import Header from "./Header"
+import Loading from "./Loading"
 
+
+function Button({name, id}){
+    return(
+        <div className="btn">
+            <p>{name}</p>
+        </div>
+    )
+}
+
+
+function InfosSessao({weekday, date, showtimes}){
+    return(
+        <div>
+            <p className="dia"> {weekday} - {date} </p>
+            <div className="c-sessao">
+            
+                {showtimes.map(item=> <Link to={`/assentos/${item.id}`}> <Button name={item.name}/> </Link> )}
+            </div>
+        </div>
+    )
+}
+
+function Main({itemApi}){
+
+    
+    return(
+        <div className="sessao">
+            {itemApi.days.map(item=> <InfosSessao weekday={item.weekday} date={item.date} showtimes={item.showtimes} />)}
+        </div>
+    )
+}
 
 
 
 export default function Sessao(){
 
-    const [itemApi, setItemApi] = React.useState({})
+    const [itemApi, setItemApi] = React.useState({load:'loading'})
     const {idSessao}= useParams()
     console.log(idSessao)
     console.log(itemApi)
+
   
     
 
@@ -23,26 +56,13 @@ export default function Sessao(){
         setItemApi(respostaApi)
     })
     },[])
-    
 
+   
     return(
         <>
-        
         <Header/>
+        {itemApi.load === "loading"? <Loading/>:<Main itemApi={itemApi}/>}
 
-        {itemApi.id}
-        {itemApi.days.map(item=> <h1>{item.weekday}</h1>)}
-
-
-        <div className="footer">
-            <div>
-                <img src={itemApi.posterURL}/>
-                <p>{itemApi.title}</p>
-            </div>
-        
-        </div>
-       
-        
         </>
     )
 }
