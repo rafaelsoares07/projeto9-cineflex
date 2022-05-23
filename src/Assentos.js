@@ -8,6 +8,68 @@ import reactDom from "react-dom"
 import Footer from "./Footer"
 
 
+function Sets({id,num,status, ids, setIds,setNum}){
+    const [selecionado, setSelecionado] = React.useState(false)
+
+    function FormatarAssento(){    
+
+        function addId(id){
+            console.log('add')
+            setNum(num)
+            const novoId = [...ids, id ]
+            setIds(novoId)
+            setSelecionado(!selecionado)
+
+            console.log(selecionado)
+            console.log(novoId)
+          
+        }
+
+        function removeId(id){
+            console.log('remove')
+
+            const novoId = ids.filter(item => item!=id )
+            setIds(novoId)
+            setSelecionado(!selecionado)
+
+            console.log(selecionado)
+            console.log(novoId)
+            
+        }
+
+        
+        if(status===false){
+        return(
+            <Assento cor={"#FBE192"}>
+                <p>{num}</p>
+           </Assento>
+        )}
+
+        if(status===true && selecionado===false){
+        
+        return(
+            <Assento onClick={()=> addId(id)} cor={"#7B8B99"}>
+                <p>{num}</p>
+            </Assento>
+        )}
+
+        if(status===true && selecionado===true){
+            
+            return(
+                <Assento onClick={()=> removeId(id)} cor={"#45BDB0"}>
+                    <p>{num}</p>
+                </Assento>
+            )}
+
+    }
+    return(
+        <>
+        
+            {FormatarAssento()}
+        </>
+       
+    )
+}
 
 
 
@@ -15,80 +77,20 @@ function Main({assentos}){
     
     console.log(assentos)
     const [ids, setIds] = React.useState([]);
+    const [num, setNum] = React.useState([]);
     const [nome, setNome]= React.useState("");
     const [cpf, setCpf] = React.useState("");
-    const navigate = useNavigate();
 
-
-
-    function Assentos({id,num,status}){
-
-        const [selecionado, setSelecionado] = React.useState(false)
-        
-    
-        function FormatarAssento(){
-
-        
-        
-
-            function addId(id){
-                console.log('add')
-                
-                const novoId = [...ids, id ]
-                setIds(novoId)
-                setSelecionado(!selecionado)
-
-                console.log(selecionado)
-                console.log(novoId)
-              
-            }
-
-            function removeId(id){
-                console.log('remove')
-
-                const novoId = ids.filter(item => item!=id )
-                setIds(novoId)
-                setSelecionado(!selecionado)
-
-                console.log(selecionado)
-                console.log(novoId)
-                
-            }
-
-            
-            if(status===false){
-            return(
-                <Assento cor={"#FBE192"}>
-                    <p>{num}</p>
-               </Assento>
-            )}
-
-            if(status===true && selecionado===false){
-            
-            return(
-                <Assento onClick={()=> addId(id)} cor={"#7B8B99"}>
-                    <p>{num}</p>
-                </Assento>
-            )}
-
-            if(status===true && selecionado===true){
-                
-                return(
-                    <Assento onClick={()=> removeId(id)} cor={"#45BDB0"}>
-                        <p>{num}</p>
-                    </Assento>
-                )}
-
-        }
-        return(
-            <>
-
-                {FormatarAssento()}
-            </>
-           
-        )
+    const InfosUser = {
+        name:nome,
+        cpf:cpf,
+        filme:assentos.movie.title,
+        data:assentos.day.weekday,
+        hora:assentos.day.date,
+        num:num,
     }
-
+   // const [selecionado, setSelecionado] = React.useState(false)
+    const navigate = useNavigate();
    
 
     function exibir(event){
@@ -104,7 +106,7 @@ function Main({assentos}){
 
         promisse.then((resonse)=>{
             console.log(resonse.data)
-            navigate("/sucesso")
+            navigate("/sucesso", {state:InfosUser})
 
         }).catch(erro=> console.log(erro))
 
@@ -119,7 +121,7 @@ function Main({assentos}){
             <h1>Selecione os seus assentos</h1>
             <p>{assentos.movie.title}</p>
             <Mapa>
-                {assentos.seats.map((item, i)=> <Assentos key={i} id={item.id} num={item.name} status={item.isAvailable}></Assentos>)}
+                {assentos.seats.map((item, i)=> <Sets setNum={setNum} setIds={setIds} ids={ids}  key={i} id={item.id} num={item.name} status={item.isAvailable}></Sets>)}
             </Mapa>
 
             <Legenda>
