@@ -3,26 +3,27 @@ import React from "react"
 import {useParams, Link } from "react-router-dom"
 import Header from "./Header"
 import Loading from "./Loading"
+import styled from "styled-components"
 
 
 function Button({name, id}){
     return(
-        <div className="btn">
+        <Botao>
             <p>{name}</p>
-        </div>
+        </Botao>
     )
 }
 
 
 function InfosSessao({weekday, date, showtimes}){
     return(
-        <div>
-            <p className="dia"> {weekday} - {date} </p>
+        <Infos>
             <div className="c-sessao">
-            
+                
+                <p className="dia"> {weekday} - {date} </p>
                 {showtimes.map(item=> <Link to={`/assentos/${item.id}`}> <Button name={item.name}/> </Link> )}
             </div>
-        </div>
+        </Infos>
     )
 }
 
@@ -30,9 +31,10 @@ function Main({itemApi}){
 
     
     return(
-        <div className="sessao">
+        <C_Sessao>
+            <p>Selecione o horário desejado:</p>
             {itemApi.days.map(item=> <InfosSessao weekday={item.weekday} date={item.date} showtimes={item.showtimes} />)}
-        </div>
+        </C_Sessao>
     )
 }
 
@@ -66,3 +68,33 @@ export default function Sessao(){
         </>
     )
 }
+
+
+const C_Sessao = styled.div`
+    text-align: center;
+    background-color: #e5e5e5;
+`;
+
+const Infos = styled.div`
+   background-color: aquamarine;
+    margin: 0 auto;
+    width: 600px;
+
+    p{
+        text-align: center;
+    }
+
+    
+`;
+
+
+const Botao = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    width: 80px;
+    height: 50px;
+    background-color: orange;
+    border-radius: 10px;
+`;

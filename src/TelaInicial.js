@@ -2,16 +2,16 @@ import axios from "axios"
 import React from "react"
 import { Link } from "react-router-dom";
 import Header from "./Header";
+import styled from "styled-components"
 
 
 
 function FilmPoster({id, posterURL, title}){
-    //console.log(id+'  '+title)
     return (
-        <div className="cardsFilme">
-           <div className="cartaz">
+        <div>
+           <Cartaz>
                <img src={posterURL}/>
-           </div>
+           </Cartaz>
         </div>
     )
 }
@@ -34,11 +34,37 @@ export default function TelaInicial(){
   
 
     return(
-        <>
+        <Body>
         <Header/>
-        <div className="l-container-cards">
+
+        <L_Container_Cards>
             {itensApi.map(item=> <Link to={`/sessao/${item.id}`}><FilmPoster id={item.id} title={item.title} posterURL={item.posterURL}></FilmPoster></Link>  )}
-        </div>
-        </>
+        </L_Container_Cards>
+
+
+        </Body>
     )
 }
+
+
+const Body = styled.div`
+    background-color: #E5E5E5;
+
+`;
+
+const L_Container_Cards = styled.div`
+    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, 250px);
+    justify-content: center;
+    justify-items: center;
+    display: grid;
+    grid-gap: 30px;
+`;
+
+const Cartaz = styled.div`
+
+    img{
+        width: 100%;
+        cursor: pointer;
+    }
+`;
