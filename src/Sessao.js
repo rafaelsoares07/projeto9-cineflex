@@ -85,9 +85,12 @@ const Sec = styled.div`
 
 
 const C_Sessao = styled.div`
-
+    
+    margin: 0 auto;
     text-align: center;
     background-color: #e5e5e5;
+    width: 375px;
+  
 `;
 
 const Infos = styled.div`
