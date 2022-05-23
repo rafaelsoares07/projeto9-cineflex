@@ -92,7 +92,7 @@ const C_Sessao = styled.div`
 
 const Infos = styled.div`
     margin: 0 auto;
-    width: 600px;
+    width: 375px;
     display: flex;
     justify-content: center;
 

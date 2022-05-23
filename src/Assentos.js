@@ -199,7 +199,7 @@ export default function Assentos(){
 
 
 const Container = styled.div`
-    width: 600px;
+    width: 375px;
     margin: 0 auto;
     text-align: center;
 
