@@ -4,6 +4,7 @@ import {useParams, Link } from "react-router-dom"
 import Header from "./Header"
 import Loading from "./Loading"
 import styled from "styled-components"
+import Footer from "./Footer"
 
 
 function Button({name, id}){
@@ -17,13 +18,17 @@ function Button({name, id}){
 
 function InfosSessao({weekday, date, showtimes}){
     return(
+        <>
+        
         <Infos>
-            <div className="c-sessao">
-                
-                <p className="dia"> {weekday} - {date} </p>
-                {showtimes.map(item=> <Link to={`/assentos/${item.id}`}> <Button name={item.name}/> </Link> )}
-            </div>
+            <Sec>
+                <Data className="dia"> {weekday} - {date} </Data>
+                {showtimes.map(item=> <Link  key={item} to={`/assentos/${item.id}`}> <Button name={item.name}/> </Link> )}
+            </Sec>
         </Infos>
+
+        
+        </>
     )
 }
 
@@ -34,6 +39,8 @@ function Main({itemApi}){
         <C_Sessao>
             <p>Selecione o horário desejado:</p>
             {itemApi.days.map(item=> <InfosSessao weekday={item.weekday} date={item.date} showtimes={item.showtimes} />)}
+        
+        <Footer img={itemApi.posterURL} filme={itemApi.title}/>
         </C_Sessao>
     )
 }
@@ -70,15 +77,24 @@ export default function Sessao(){
 }
 
 
+const Sec = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
+
 const C_Sessao = styled.div`
+
     text-align: center;
     background-color: #e5e5e5;
 `;
 
 const Infos = styled.div`
-   background-color: aquamarine;
     margin: 0 auto;
     width: 600px;
+    display: flex;
+    justify-content: center;
 
     p{
         text-align: center;
@@ -97,4 +113,8 @@ const Botao = styled.div`
     height: 50px;
     background-color: orange;
     border-radius: 10px;
+`;
+
+const Data = styled.p`
+    width: 110px;
 `;

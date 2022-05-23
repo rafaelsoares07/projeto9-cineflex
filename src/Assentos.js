@@ -5,6 +5,7 @@ import Loading from "./Loading"
 import styled from "styled-components"
 import Header from "./Header"
 import reactDom from "react-dom"
+import Footer from "./Footer"
 
 
 
@@ -12,30 +13,72 @@ import reactDom from "react-dom"
 
 function Main({assentos}){
     
+    console.log(assentos)
     const [ids, setIds] = React.useState([]);
     const [nome, setNome]= React.useState("");
     const [cpf, setCpf] = React.useState("");
-    const [selecionado, setSelecionado] = React.useState(false)
-
     const navigate = useNavigate();
 
 
 
     function Assentos({id,num,status}){
 
-        function FormatarAssento(status){
+        const [selecionado, setSelecionado] = React.useState(false)
+        
+    
+        function FormatarAssento(){
+
+        
+        
+
+            function addId(id){
+                console.log('add')
+                
+                const novoId = [...ids, id ]
+                setIds(novoId)
+                setSelecionado(!selecionado)
+
+                console.log(selecionado)
+                console.log(novoId)
+              
+            }
+
+            function removeId(id){
+                console.log('remove')
+
+                const novoId = ids.filter(item => item!=id )
+                setIds(novoId)
+                setSelecionado(!selecionado)
+
+                console.log(selecionado)
+                console.log(novoId)
+                
+            }
+
+            
             if(status===false){
+            return(
+                <Assento cor={"#FBE192"}>
+                    <p>{num}</p>
+               </Assento>
+            )}
 
-            <Assento cor={"#FBE192"}>
-                <p>{num + status}</p>
-            </Assento>
-            }
+            if(status===true && selecionado===false){
+            
+            return(
+                <Assento onClick={()=> addId(id)} cor={"#7B8B99"}>
+                    <p>{num}</p>
+                </Assento>
+            )}
 
-            if(status===true){
-            <Assento cor={"#7B8B99"}>
-                <p>{num + status}</p>
-            </Assento>
-            }
+            if(status===true && selecionado===true){
+                
+                return(
+                    <Assento onClick={()=> removeId(id)} cor={"#45BDB0"}>
+                        <p>{num}</p>
+                    </Assento>
+                )}
+
         }
         return(
             <>
@@ -46,13 +89,7 @@ function Main({assentos}){
         )
     }
 
-    function addId(item){
-
-        console.log(item.status)
-
-        const novoId = [...ids, item.id ]
-        setIds(novoId)
-    }
+   
 
     function exibir(event){
         event.preventDefault()
@@ -77,56 +114,70 @@ function Main({assentos}){
 
 
     return(
+        <>
         <Container>
             <h1>Selecione os seus assentos</h1>
             <p>{assentos.movie.title}</p>
             <Mapa>
-                {assentos.seats.map((item, i)=> <Assentos key={item} id={item.id} num={item.name} status={item.isAvailable}></Assentos>)}
+                {assentos.seats.map((item, i)=> <Assentos key={i} id={item.id} num={item.name} status={item.isAvailable}></Assentos>)}
             </Mapa>
+
+            <Legenda>
+                <div>
+                    <Icon cor={"#8DD7CF"}></Icon>
+                    <p>Selecionado</p>
+                </div>
+
+                <div>
+                    <Icon cor={"#C3CFD9"}></Icon>
+                    <p>Disponível</p>
+                </div>
+
+                <div>
+                    <Icon cor={"#FBE192"}></Icon>
+                    <p>Indisponível</p>
+                </div>
+            </Legenda>
 
             <Form>
                 <form onSubmit={exibir}>
 
-                <label>insira seu nome</label>
+                <label>Insira seu Nome:</label>
                 <input value={nome} onChange={(event)=> setNome(event.target.value)} required ></input> <br/>
 
-                <label>insira seu cpf:</label>
+                <label>Insira seu CPF:</label>
                 <input value={cpf} onChange={(event)=> setCpf(event.target.value)} required ></input>
 
-                <button onClick={exibir}>Comprar Ingressos</button>
+                <button onClick={exibir}>Reservar Assento(s)</button>
 
                 </form>
                 
             </Form>
-            
 
+      
         </Container>
+          <Footer filme={assentos.movie.title} img={assentos.movie.posterURL} data={assentos.day.weekday} dia={assentos.day.date} />
+        </>
         
     )
 }
+
+
+
 
 export default function Assentos(){
 
     const [assentos, setAssentos] = React.useState({load:'loading'})
     const {idAssento}= useParams()
 
-    
-
-    
    React.useEffect(()=>{
        const promisse = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idAssento}/seats`)
        promisse.then(response=>{
         const respostaApi = response.data
         setAssentos(respostaApi)
-        
        })
-
-
-
    },[])
     
-  
-
     return(
         <div>
             <Header/>
@@ -137,9 +188,15 @@ export default function Assentos(){
 }
 
 
+
+
+
+
+
+
+
+
 const Container = styled.div`
-
-
     width: 600px;
     margin: 0 auto;
     text-align: center;
@@ -149,7 +206,6 @@ const Container = styled.div`
     }
 
 `;
-
 
 const Mapa = styled.div`
     width: 360px;
@@ -175,7 +231,6 @@ const Form = styled.div`
 margin: 0 auto;
 width: 360px;
 
-
 input{
     border: none;
     border-radius: 5px;
@@ -185,7 +240,36 @@ input{
 }
 
 button{
+    cursor: pointer;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    border: none;
+    background-color:#E8833A;
     width: 220px;
     height: 40px;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 400;
 }
+`;
+
+const Legenda = styled.div`
+    margin: 10px auto;
+    width: 360px;
+    display: flex;
+    justify-content: space-between;
+
+    div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+`;
+
+const Icon = styled.div`
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: ${props => props.cor}
 `;

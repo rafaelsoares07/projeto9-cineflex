@@ -6,6 +6,7 @@ import styled from "styled-components"
 
 
 
+
 function FilmPoster({id, posterURL, title}){
     return (
         <div>
@@ -42,6 +43,7 @@ export default function TelaInicial(){
         </L_Container_Cards>
 
 
+        
         </Body>
     )
 }
