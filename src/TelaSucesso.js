@@ -31,7 +31,7 @@ export default function TelaSucesso(){
             </Ingressos>
             <Comprador>
                 <p>Comprador:</p>
-                <span>Nome:{Info.nome}</span>
+                <span>Nome:{Info.name}</span>
                 <span>CPF: {Info.cpf}</span>
             </Comprador>
         </Container>
